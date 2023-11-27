@@ -27,10 +27,11 @@ function createMainWindow() {
       transparent: true,
       backgroundColor: "#00FFFFFF",
       resizable: false,
+      
     },
   });
 
-
+  mainWindow.setMenu(null)
 // aspect ratio
 //   const defaultRatio = 16 / 9;
 
