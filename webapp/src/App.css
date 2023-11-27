@@ -4,13 +4,21 @@
 }
 
 #root{
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(47, 47, 47);
 }
 
 #myscreen{
   visibility: hidden;
 }
 
+body{
+  background-color: rgb(47, 47, 47);
+}
+
+
+::-webkit-scrollbar {
+  display: none;
+}
 
 #remscreen{
   background-color: rgb(113, 93, 242);
@@ -21,7 +29,11 @@
   left: 0px;
   /* right: 0px; */
   width: 100%;
-  /* height: 100%; */
+  height: auto;
     /* cursor: url("./cursor.png") 24 24, auto; */
 
+}
+
+#root {
+  background-color: rgb(43 178 227 / 0%);
 }

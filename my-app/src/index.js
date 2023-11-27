@@ -2,28 +2,44 @@ const { app, BrowserWindow, desktopCapturer, ipcMain } = require("electron");
 const url = require("url");
 const path = require("path");
 const { session } = require("electron");
-const { clipboard } = require("electron");
+const { clipboard } = require("electron")
 
 
 
 
 function createMainWindow() {
   const mainWindow = new BrowserWindow({
-    title: "Assitant",
+    title: "Reciver",
     width: 1200,
-    height: 720,
-    minWidth: 480,
-    minHeight: 280,
+    height: 722,
+    // minWidth: 480,
+    // minHeight: 280,
 
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
       sandbox: false,
+      frame: false,
       contextIsolation: true,
       webSecurity: false,
       allowRunningInsecureContent: true,
+      focusable: false,
+      transparent: true,
+      backgroundColor: "#00FFFFFF",
+      resizable: false,
     },
   });
+
+
+// aspect ratio
+//   const defaultRatio = 16 / 9;
+
+//   mainWindow.setAspectRatio(defaultRatio);
+
+//   mainWindow.on("resize", () => {
+//   const ratio = mainWindow.isFullScreen() ? 0 : defaultRatio;
+//   mainWindow.setAspectRatio(ratio);
+// });
 
 
   function UpsertKeyValue(obj, keyToChange, value) {
