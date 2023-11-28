@@ -34,6 +34,7 @@ function App() {
   const [messageReceived, setMessageReceived] = useState("");
   const [mouseclick, setMouseclick] = useState("");
   const [isMouseHide, setIsMouseHide] = useState(false);
+  const [enableToggler, setEnableToggler] = useState(false);
 
 //popup const html ids
 const controllerPinElement = document.getElementById("controlpin");
@@ -325,6 +326,7 @@ const clientHeight = screlement.offsetHeight;
           clientWidth,
           clientHeight,
           isMouseHide,
+          enableToggler,
           // clientWidth: window.innerWidth,
           // clientHeight: window.innerHeight,
           room,
@@ -389,13 +391,35 @@ console.log(isMouseHide)
   <div className="controller" id="controller" ref={controllerPanel} onMouseEnter={()=>{setIsMouseOnPanel(true)}} onMouseLeave={()=>{
   }} > 
     <input type="text" id='roomInput' ref={inputRoom} onChange={handleRoomInputChange} />
-    <button onClick={joinRoom} >Connect User </button>
+    <button onClick={joinRoom} id='connect_user' >Connect User </button>
       {/* <input type="text" id='input' ref={inputValue} onChange={(e)=>{ setMessage(e.target.value)}} placeholder='enter message ' /> */}
       {/* <button onClick={sendMessage} >Send Message</button> */}
+      <div className='samplethressdiv'>
       <input type="text" id='samplethres'onChange={handlesamplethress}  placeholder='sampling thresold'/>
+      <label htmlFor="samplethres">Sampling Thresold</label>
+      </div>
+      <div className='disablemousecdiv'>
       <input type="checkbox" id='myCheckbox' label="Disable Client Mouse" checked={isMouseHide} onChange={handleChange} />
       <label htmlFor="myCheckbox">Disable Client Mouse</label>
-      <button onClick={()=>{
+      </div>
+      <div className='changeCtrlPos'>
+          <button onClick={()=>{
+            document.getElementById("controlpin").style.cssText = "right: 1200px";
+          }}>Left</button>
+          <button onClick={()=>{
+          document.getElementById("controlpin").style.cssText = "left: 1200px";
+          }}>Right</button>
+      </div>
+      <div className='toggerdiv'>
+        <button className='toggerdiv_button' onClick={()=>{
+          if(enableToggler == false){
+            setEnableToggler(true)
+          }else{
+            setEnableToggler(false)
+          }
+        }}>Mouse Toggler</button>
+      </div>
+      <button className='closepenlbtn' onClick={()=>{
     controllerPanel.current.style.visibility = "hidden"
     controllerPinRef.current.style.visibility = "visible"
   }}> close panel</button>

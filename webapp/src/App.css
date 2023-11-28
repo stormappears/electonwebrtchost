@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
 }
+@import url('https://fonts.googleapis.com/css2?family=Alumni+Sans+Collegiate+One:ital@1&family=Inter:wght@300;400&display=swap');
 
 #root{
   background-color: rgb(47, 47, 47);
@@ -42,6 +43,12 @@ body{
   margin-left: auto; 
   margin-right: auto; 
   z-index: 10;
+  top: -4px;
+  opacity: 0.9;
+}
+
+.controlpin:hover{
+  opacity: 1;
 }
 
 .controller {
@@ -59,6 +66,7 @@ body{
   margin-left: auto; 
   margin-right: auto; 
   z-index: 8;
+  padding: 10px;
 }
 
 
@@ -78,4 +86,50 @@ body{
 
 #root {
   background-color: rgb(43 178 227 / 0%);
+}
+
+#roomInput{
+width: 169px;
+height: 24px;
+border-radius: 3px;
+border: 1px solid #ABABAB;
+background: #D8D8D8;
+margin-right: 10px;
+}
+
+#connect_user{
+  width: 113px;
+  height: 24px;
+  border-radius: 3px;
+  border: 1px solid #2840BC;
+  background: #6F63FF;
+  color: #FFF;
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#samplethres{
+  width: 40px;
+  height: 20px;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  bottom: 0;
+  
+}
+
+.samplethressdiv{
+  margin-bottom: 20px;
+}
+
+.disablemousecdiv{
+  display: flex;
+  gap: 40px;
+}
+
+.closepenlbtn{
+
 }
