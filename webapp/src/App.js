@@ -35,6 +35,16 @@ function App() {
   const [mouseclick, setMouseclick] = useState("");
   const [isMouseHide, setIsMouseHide] = useState(false);
 
+//popup const html ids
+const controllerPinElement = document.getElementById("controlpin");
+const controllerElement = document.getElementById("controller");
+const bgement = document.getElementById("bg");
+const controllerPanel = useRef(null);
+const controllerPinRef = useRef(null);
+const [ isMouseOnPanel , setIsMouseOnPanel ] = useState(false)
+
+
+
 
 
 
@@ -363,16 +373,37 @@ console.log(isMouseHide)
 
 
   return (
-    <> 
+  <> 
+  <div id="bg" onMouseLeave={()=>{
+  }}>
+
+  <div className="controlpin" id="controlpin"  ref={controllerPinRef} onClick={()=>{
+      controllerPanel.current.style.visibility = "visible"
+      controllerPinRef.current.style.visibility = "hidden"
+      controllerPanel.current.style.zIndex = "10"
+      controllerPinRef.current.style.zIndex = "8"
+    }
+       
+ } >  </div>
+
+  <div className="controller" id="controller" ref={controllerPanel} onMouseEnter={()=>{setIsMouseOnPanel(true)}} onMouseLeave={()=>{
+  }} > 
     <input type="text" id='roomInput' ref={inputRoom} onChange={handleRoomInputChange} />
     <button onClick={joinRoom} >Connect User </button>
-
-      <input type="text" id='input' ref={inputValue} onChange={(e)=>{ setMessage(e.target.value)}} placeholder='enter message ' />
-      <button onClick={sendMessage} >Send Message</button>
-
+      {/* <input type="text" id='input' ref={inputValue} onChange={(e)=>{ setMessage(e.target.value)}} placeholder='enter message ' /> */}
+      {/* <button onClick={sendMessage} >Send Message</button> */}
       <input type="text" id='samplethres'onChange={handlesamplethress}  placeholder='sampling thresold'/>
       <input type="checkbox" id='myCheckbox' label="Disable Client Mouse" checked={isMouseHide} onChange={handleChange} />
       <label htmlFor="myCheckbox">Disable Client Mouse</label>
+      <button onClick={()=>{
+    controllerPanel.current.style.visibility = "hidden"
+    controllerPinRef.current.style.visibility = "visible"
+  }}> close panel</button>
+      
+  </div>
+
+
+
  
       <video id="remscreen"     onMouseMove={handleMouseMove} onMouseDown={handleMouseDown}   onMouseUp={handleMouseUp}      onClick={handleMouseClick} ref={remoteVideoRef} onContextMenu={(event) => {
       if (event.button === 2) {
@@ -380,10 +411,11 @@ console.log(isMouseHide)
         socket.emit("mouseclickr" , {  room })
         console.log('You right-clicked on the element!');
       }
-    }}               />
+    }}/>
+
       <video id="myscreen" ref={currentUserVideoRef} />
 
-   
+      </div>
      
     </>
   )

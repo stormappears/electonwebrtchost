@@ -31,7 +31,7 @@ function createMainWindow() {
     },
   });
 
-  mainWindow.setMenu(null)
+  // mainWindow.setMenu(null)
 // aspect ratio
 //   const defaultRatio = 16 / 9;
 
@@ -130,7 +130,7 @@ function createMainWindow() {
     mainWindow.show();
     // mainWindow.setPosition(800, 0);
     //devtool
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     // Get available sources for screen capture
 
     desktopCapturer
