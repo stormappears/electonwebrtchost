@@ -1,7 +1,8 @@
 import io from 'socket.io-client'
 import  Peer  from 'peerjs';
-import { useState ,useRef , useEffect} from 'react'
+import { useState ,useRef , useEffect ,createRef} from 'react'
 import './App.css'
+import { useScreenshot } from 'use-react-screenshot'
 
 const electron = window.electron;
 
@@ -45,6 +46,13 @@ const controllerPinRef = useRef(null);
 const [ isMouseOnPanel , setIsMouseOnPanel ] = useState(false)
 
 
+//state , func and ref for screenshot
+const ref = useRef(null)
+const [image, takeScreenshot] = useScreenshot({
+  type : 'image/jpeg',
+  quality : 1.0
+})
+const getImage = () => takeScreenshot(remoteVideoRef.current)
 
 
 
@@ -122,6 +130,12 @@ const clientHeight = screlement.offsetHeight;
     }); 
     
     //mouse togg left (listener)
+    socket.on("mousetogg_send", (data) => {
+      console.log("mouse x : "  + data.mousex + "mouse y : " + data.mousey)
+    });  
+    
+    
+    //screenshot reciver
     socket.on("mousetogg_send", (data) => {
       console.log("mouse x : "  + data.mousex + "mouse y : " + data.mousey)
     });
@@ -419,6 +433,9 @@ console.log(isMouseHide)
           }
         }}>Mouse Toggler</button>
       </div>
+      <div>
+        <button onClick={getImage} >Capture Screenshot</button>
+      </div>
       <button className='closepenlbtn' onClick={()=>{
     controllerPanel.current.style.visibility = "hidden"
     controllerPinRef.current.style.visibility = "visible"
@@ -436,11 +453,9 @@ console.log(isMouseHide)
         console.log('You right-clicked on the element!');
       }
     }}/>
-
       <video id="myscreen" ref={currentUserVideoRef} />
-
+      <img src={image} alt="screenshot"/>
       </div>
-     
     </>
   )
 }
