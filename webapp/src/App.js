@@ -85,17 +85,17 @@ const getImage = () => takeScreenshot(remoteVideoRef.current)
     clientY,
   }) =>{
     //scr element
-const screlement = document.getElementById('remscreen');
-const clientWidth = screlement.offsetWidth;
-const clientHeight = screlement.offsetHeight;
+// const screlement = document.getElementById('remscreen');
+// const clientWidth = screlement.offsetWidth;
+// const clientHeight = screlement.offsetHeight;
 
       socket.emit("mouseclickl" , {
         clientX,
         clientY,
-        clientWidth,
-        clientHeight,
-        // clientWidth: window.innerWidth,
-        // clientHeight: window.innerHeight,
+        // clientWidth,
+        // clientHeight,
+        clientWidth: window.innerWidth,
+        clientHeight: window.innerHeight,
         room,
       })
   }
@@ -319,30 +319,49 @@ const clientHeight = screlement.offsetHeight;
   // code with sampling thresold
   const samplingThreshold = localStorage.getItem("sampling_thresold") || 100; // milliseconds
   let timer = null;
+  let clientWidth = window.innerWidth;
+  let clientHeight = window.innerHeight;
+  console.log(clientWidth + "Hey its width");
+  console.log(clientHeight + "Hey its height");
   
-  const handleMouseMove = ({
-    clientX,
-    clientY,
-  }) => {
-    
+  // const handleMouseMove = ({ clientX, clientY}) => {
+  //   if (!timer) {
+  //     //scr element
+  //     // const screlement = document.getElementById("remscreen");
+  //     // const clientWidth = screlement.offsetWidth;
+  //     // const clientHeight = screlement.offsetHeight;
+  //     timer = setTimeout(() => {
+  //       console.log(clientX, clientY);
+  //       socket.emit("mousecord", {
+  //         clientX,
+  //         clientY,
+  //         clientWidth,
+  //         clientHeight,
+  //         isMouseHide,
+  //         enableToggler,
+  //         // clientWidth: window.innerWidth,
+  //         // clientHeight: window.innerHeight,
+  //         room,
+  //       });
+  //       timer = null;
+  //     }, samplingThreshold);
+  //   }
+  // };
+
+  const handleMouseMove = ({ clientX, clientY }) => {
     if (!timer) {
-      //scr element
-const screlement = document.getElementById('remscreen');
-const clientWidth = screlement.offsetWidth;
-const clientHeight = screlement.offsetHeight;
-      console.log(clientWidth);
-      console.log(clientHeight);
+      const clientWidth = window.innerWidth;
+      const clientHeight = window.innerHeight;
+
       timer = setTimeout(() => {
         console.log(clientX, clientY);
-        socket.emit('mousecord', {
+        socket.emit("mousecord", {
           clientX,
           clientY,
           clientWidth,
           clientHeight,
           isMouseHide,
           enableToggler,
-          // clientWidth: window.innerWidth,
-          // clientHeight: window.innerHeight,
           room,
         });
         timer = null;
@@ -351,7 +370,16 @@ const clientHeight = screlement.offsetHeight;
   };
 
 
-  
+    console.log(clientWidth + "Hey its width");
+    console.log(clientHeight + "Hey its height");
+
+
+
+
+
+
+
+
 // click and hold mouse events
 let hold ;
 

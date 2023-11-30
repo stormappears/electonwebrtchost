@@ -11,7 +11,11 @@ function createMainWindow() {
   const mainWindow = new BrowserWindow({
     title: "Reciver",
     width: 1200,
-    height: 722,
+    height: 720,
+    frame: true,
+    focusable: true,
+    transparent: false,
+    resizable: true,
     // minWidth: 480,
     // minHeight: 280,
 
@@ -19,19 +23,13 @@ function createMainWindow() {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true,
       sandbox: false,
-      frame: false,
       contextIsolation: true,
       webSecurity: false,
       allowRunningInsecureContent: true,
-      focusable: false,
-      transparent: true,
-      backgroundColor: "#00FFFFFF",
-      resizable: false,
-      
     },
   });
 
-  // mainWindow.setMenu(null)
+  mainWindow.setMenu(null)
 // aspect ratio
 //   const defaultRatio = 16 / 9;
 
