@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
+  "homepage": ".",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -18,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "electron-localshortcut": "^3.2.1",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {

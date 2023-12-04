@@ -1,8 +1,16 @@
-const { app, BrowserWindow, desktopCapturer, ipcMain } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  desktopCapturer,
+  ipcMain,
+  globalShortcut,
+  session,
+  clipboard,
+} = require("electron");
 const url = require("url");
 const path = require("path");
-const { session } = require("electron");
-const { clipboard } = require("electron")
+
+
 
 
 
@@ -10,8 +18,10 @@ const { clipboard } = require("electron")
 function createMainWindow() {
   const mainWindow = new BrowserWindow({
     title: "Reciver",
-    width: 1200,
+    width: 1280,
     height: 720,
+    minWidth: 1280,
+    minHeight: 720,
     frame: true,
     focusable: true,
     transparent: false,
@@ -29,17 +39,29 @@ function createMainWindow() {
     },
   });
 
-  mainWindow.setMenu(null)
-// aspect ratio
-//   const defaultRatio = 16 / 9;
+  //SuperOrSuper
 
-//   mainWindow.setAspectRatio(defaultRatio);
+  globalShortcut.register('CommandOrControl+R', (e) => {
+    // Do stuff when Y and either Command/Control is pressed.
+    console.log("Shortcut worked")
+    mainWindow.webContents.send("run_run",  e);
+  })
 
-//   mainWindow.on("resize", () => {
-//   const ratio = mainWindow.isFullScreen() ? 0 : defaultRatio;
-//   mainWindow.setAspectRatio(ratio);
-// });
 
+
+  // Check whether a shortcut is registered.
+
+
+  // mainWindow.setMenu(null);
+  // aspect ratio
+  //   const defaultRatio = 16 / 9;
+
+  //   mainWindow.setAspectRatio(defaultRatio);
+
+  //   mainWindow.on("resize", () => {
+  //   const ratio = mainWindow.isFullScreen() ? 0 : defaultRatio;
+  //   mainWindow.setAspectRatio(ratio);
+  // });
 
   function UpsertKeyValue(obj, keyToChange, value) {
     const keyToChangeLower = keyToChange.toLowerCase();
@@ -54,7 +76,6 @@ function createMainWindow() {
     // Insert at end instead
     obj[keyToChange] = value;
   }
-
 
   mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
     (details, callback) => {
@@ -74,7 +95,6 @@ function createMainWindow() {
       });
     }
   );
-
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     delete details.responseHeaders["Content-Security-Policy"];
@@ -109,8 +129,6 @@ function createMainWindow() {
   //   }
   // );
 
-
-
   // // code for production build
   // const startUrl = url.format({
   //   pathname: path.join(__dirname, "./build/index.html"),
@@ -122,6 +140,7 @@ function createMainWindow() {
   //     protocol : 'file'
   // })
 
+  // mainWindow.loadURL(startUrl);
   mainWindow.loadURL("http://localhost:3000/");
 
   mainWindow.once("ready-to-show", () => {
@@ -144,11 +163,18 @@ function createMainWindow() {
           }
         }
       });
-
-
   });
 }
 
 app.on("ready", createMainWindow);
 // app.whenReady(createMainWindow);
 app.allowRendererProcessReuse = false;
+
+
+app.on("will-quit", () => {
+  // Unregister a shortcut.
+  globalShortcut.unregister("Super");
+
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll();
+});
