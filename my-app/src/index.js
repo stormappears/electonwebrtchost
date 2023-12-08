@@ -20,8 +20,6 @@ function createMainWindow() {
     title: "Reciver",
     width: 1280,
     height: 720,
-    minWidth: 1280,
-    minHeight: 720,
     frame: true,
     focusable: true,
     transparent: false,
@@ -52,7 +50,7 @@ function createMainWindow() {
   // Check whether a shortcut is registered.
 
 
-  // mainWindow.setMenu(null);
+  mainWindow.setMenu(null);
   // aspect ratio
   //   const defaultRatio = 16 / 9;
 
@@ -130,10 +128,10 @@ function createMainWindow() {
   // );
 
   // // code for production build
-  // const startUrl = url.format({
-  //   pathname: path.join(__dirname, "./build/index.html"),
-  //   protocol: "file",
-  // });
+  const startUrl = url.format({
+    pathname: path.join(__dirname, "./build/index.html"),
+    protocol: "file",
+  });
 
   // const startUrl = url.format({
   //     pathname: path.join(__dirname, './webapp/build/index.html'),

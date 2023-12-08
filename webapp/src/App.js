@@ -30,6 +30,8 @@ function App() {
   const [isMouseHide, setIsMouseHide] = useState(false);
   const [enableToggler, setEnableToggler] = useState(false);
   const [keyHoldMode, setkeyHoldMode] = useState(false);
+  const [isMouseOnPin, SetIssMouseOnPin] = useState(false);
+
   // const [clientHeight, setClientHeight] = useState()
   // const [clientWidth, setClientWidth] = useState();
 
@@ -48,11 +50,15 @@ function App() {
   // Join Room Function
 
   function joinRoom() {
+    console.log("Room Function Hitted")
     if (room !== "") {
       socket.emit("join_room", room);
+      socket.emit("monoff", { room });
+        socket.emit("askscreen", { room });
+        console.log("asksed screen")
     }
     getStream2(room);
-    var elementr = document.getElementById("remscreen");
+  
     // elementr.style.cursor = 'none'
     // document.getElementById('remscreen').style.cursor = 'url(' + myCursor + ')';
     // document.getElementById("remscreen").style.cursor =  ' url("./assets/cursor.png") 24 24, auto'
@@ -81,6 +87,30 @@ function App() {
   //     room,
   //   });
   // };
+  
+
+
+
+
+// ================================================================
+  // const handleMouseMove = ({ clientX, clientY }) => {
+  //   let  clientWidth = videoarearef.current.clientWidth;
+  //   let clientHeight = videoarearef.current.clientHeight;
+
+
+  //   console.log(clientX + "Hey its working");
+  //   socket.emit("mousecord", {
+  //     room,
+  //     clientX,
+  //     clientY,
+  //     // clientWidth: window.innerWidth,
+  //     // clientHeight: window.innerHeight,
+  //     clientWidth,
+  //     clientHeight,
+  //   });
+  // };
+
+
 
   //Mouse ClickR Event
 
@@ -118,6 +148,22 @@ function App() {
     socket.on("mousetogg_send", (data) => {
       console.log("mouse x : " + data.mousex + "mouse y : " + data.mousey);
     });
+
+      
+      //recive screen 
+      socket.on("recive_sendscreen", (data) => {
+        console.log("Screen Data Arived So Long");
+        console.log(data.boundHeight);
+        console.log(data.boundWidth);
+          let elementr = document.getElementById("remscreendiv");
+          elementr.style.height = data.boundHeight;
+          elementr.style.width = data.boundWidth;
+        // remoteVideoRef.current.offsetHeight = "1920";
+        // remoteVideoRef.current.offsetWidth = "1080";
+      });
+
+
+
   }, [socket]);
 
   
@@ -130,8 +176,8 @@ function App() {
       
       var posXO = remScreenElement.offsetLeft;
       var posYO = remScreenElement.offsetTop;
-      var x = event.pageX - posXO;
-      var y = event.pageY - posYO;
+      var clientX = event.pageX - posXO;
+      var clientY = event.pageY - posYO;
 
       let remoteDimension = {
         width: window.innerWidth,
@@ -148,8 +194,8 @@ function App() {
       console.log("cwidth" + cwidth);
 
       socket.emit("mousecord", {
-        x,
-        y,
+        clientX,
+        clientY,
         posX,
         posY,
         remoteDimension,
@@ -211,7 +257,9 @@ function App() {
 
         call.on("stream", (remoteStream) => {
           remoteVideoRef.current.srcObject = remoteStream;
-          remoteVideoRef.current.play();
+
+          remoteVideoRef.onloadedmetadata = (e) => remoteVideoRef.current.play();
+           
         });
       });
 
@@ -419,16 +467,31 @@ socket.emit("screenshot", { hold, room });
 // turn on mon
 
 
-const handleMonOn = () =>{
-socket.emit("monon", { room })
-}
+// const handleMonOn = () =>{
+// socket.emit("monon", { room })
+// }
 
 
-// turn of mon
+// // turn of mon
 
-const handleMonOff = () =>{
-socket.emit("monoff", { room })
-}
+// const handleMonOff = () =>{
+// socket.emit("monoff", { room })
+// }
+
+
+
+// panel auto hide
+
+
+
+useEffect(()=>{
+
+
+})
+
+
+
+
 
 
 
@@ -440,11 +503,35 @@ socket.emit("monoff", { room })
           className="controlpin"
           id="controlpin"
           ref={controllerPinRef}
+          onMouseEnter={() => {
+            controllerPanel.current.style.visibility = "visible";
+            controllerPinRef.current.style.visibility = "hidden";
+            controllerPanel.current.style.zIndex = "10";
+            controllerPinRef.current.style.zIndex = "8";
+
+            if (isMouseOnPanel == true) {
+              setTimeout(() => {
+                controllerPanel.current.style.visibility = "hidden";
+                controllerPinRef.current.style.visibility = "visible";
+              }, 10000);
+            } else {
+              setTimeout(() => {
+                controllerPanel.current.style.visibility = "hidden";
+                controllerPinRef.current.style.visibility = "visible";
+              }, 5000);
+            }
+          }}
+          // onMouseLeave={SetIssMouseOnPin(false)}
           onClick={() => {
             controllerPanel.current.style.visibility = "visible";
             controllerPinRef.current.style.visibility = "hidden";
             controllerPanel.current.style.zIndex = "10";
             controllerPinRef.current.style.zIndex = "8";
+
+            setTimeout(() => {
+              controllerPanel.current.style.visibility = "hidden";
+              controllerPinRef.current.style.visibility = "visible";
+            }, 5000);
           }}
         >
           {" "}
@@ -457,7 +544,9 @@ socket.emit("monoff", { room })
           onMouseEnter={() => {
             setIsMouseOnPanel(true);
           }}
-          onMouseLeave={() => {}}
+          onMouseLeave={() => {
+            setIsMouseOnPanel(false);
+          }}
         >
           <input
             type="text"
@@ -524,9 +613,9 @@ socket.emit("monoff", { room })
           <div>
             <button onClick={getImage}>Capture Screenshot</button>
           </div>
-          <button onClick={handleMonOff}>Mon Off</button>
-          <button onClick={handleMonOn}>Mon On</button>
-
+          {/* <button onClick={handleMonOff}>Mon Off</button>
+          <button onClick={handleMonOn}>Mon On</button> */}
+          {/* 
           <button
             className="closepenlbtn"
             onClick={() => {
@@ -536,7 +625,7 @@ socket.emit("monoff", { room })
           >
             {" "}
             close panel
-          </button>
+          </button> */}
         </div>
 
         <div
@@ -544,6 +633,7 @@ socket.emit("monoff", { room })
           onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           // onClick={handleMouseClick}
+          // onMouseMove={handleMouseMove}
           ref={videoarearef}
           onContextMenu={(event) => {
             if (event.button === 2) {
@@ -552,7 +642,7 @@ socket.emit("monoff", { room })
               console.log("You right-clicked on the element!");
             }
           }}
-        >
+          >
           <video
             // onMouseMove={handleMouseMove}
             id="remscreen"
