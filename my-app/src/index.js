@@ -10,16 +10,11 @@ const {
 const url = require("url");
 const path = require("path");
 
-
-
-
-
-
 function createMainWindow() {
   const mainWindow = new BrowserWindow({
     title: "Reciver",
     width: 1280,
-    height: 720,
+    height: 500,
     frame: true,
     focusable: true,
     transparent: false,
@@ -39,27 +34,45 @@ function createMainWindow() {
 
   //SuperOrSuper
 
-  globalShortcut.register('CommandOrControl+R', (e) => {
-    // Do stuff when Y and either Command/Control is pressed.
-    console.log("Shortcut worked")
-    mainWindow.webContents.send("run_run",  e);
-  })
+  globalShortcut.register("Shift+N", () => {
+    mainWindow.webContents.send("close_run");
+    console.log("close run in main");
+  });
 
+  //close host
+  globalShortcut.register("Shift+Q", () => {
+    app.quit();
+  });
 
+  //app quitter
+  app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+      app.quit();
+    }
+  });
 
   // Check whether a shortcut is registered.
 
-
-  mainWindow.setMenu(null);
+  // enable or disable menue
+  // mainWindow.setMenu(null);
   // aspect ratio
-  //   const defaultRatio = 16 / 9;
+  // const defaultRatio = 16 / 9;
 
-  //   mainWindow.setAspectRatio(defaultRatio);
+  // mainWindow.setAspectRatio(defaultRatio);
 
-  //   mainWindow.on("resize", () => {
+  // mainWindow.on("resize", () => {
   //   const ratio = mainWindow.isFullScreen() ? 0 : defaultRatio;
   //   mainWindow.setAspectRatio(ratio);
   // });
+
+  // ipcMain.on("resize-me-please", (event, data) => {
+  //   mainWindow.setSize(data.width, data.height);
+  // });
+
+  ipcMain.on("resize-me-please", (event, data) => {
+    console.log("hey its resiser data :", data);
+    mainWindow.setSize(data.width, data.height);
+  });
 
   function UpsertKeyValue(obj, keyToChange, value) {
     const keyToChangeLower = keyToChange.toLowerCase();
@@ -140,6 +153,7 @@ function createMainWindow() {
 
   // mainWindow.loadURL(startUrl);
   mainWindow.loadURL("http://localhost:3000/");
+  // mainWindow.loadURL("https://elhost.netlify.app/");
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
@@ -167,7 +181,6 @@ function createMainWindow() {
 app.on("ready", createMainWindow);
 // app.whenReady(createMainWindow);
 app.allowRendererProcessReuse = false;
-
 
 app.on("will-quit", () => {
   // Unregister a shortcut.
